@@ -9,6 +9,7 @@
     {
         <li>
             <strong>@poll.Title</strong> - @poll.DateCreated.ToShortDateString()
+            <a asp-action="Vote" asp-route-id="@poll.Id">Vote</a>
         </li>
     }
 </ul>

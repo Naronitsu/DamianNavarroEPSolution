@@ -1,0 +1,40 @@
+﻿@model Domain.Poll
+
+<h2>@Model.Title</h2>
+<p>Thanks for voting! Here's the current result:</p>
+
+<canvas id="pollChart" width="400" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('pollChart');
+
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '@Model.Option1Text',
+                    '@Model.Option2Text',
+                    '@Model.Option3Text'
+                ],
+                datasets: [{
+                    label: 'Votes',
+                    data: [
+    @Model.Option1VotesCount,
+    @Model.Option2VotesCount,
+    @Model.Option3VotesCount
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    });
+</script>
+
+<a href="/Poll/Index">⬅ Back to Polls</a>

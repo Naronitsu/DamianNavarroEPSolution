@@ -28,5 +28,21 @@ namespace DataAccess
         {
             return _context.Polls.OrderByDescending(p => p.DateCreated).ToList();
         }
+
+        public void Vote(int pollId, int optionSelected)
+        {
+            var poll = _context.Polls.Find(pollId);
+            if (poll == null) return;
+
+            switch (optionSelected)
+            {
+                case 1: poll.Option1VotesCount++; break;
+                case 2: poll.Option2VotesCount++; break;
+                case 3: poll.Option3VotesCount++; break;
+            }
+
+            _context.SaveChanges();
+        }
+
     }
 }
