@@ -1,51 +1,76 @@
 ﻿@model Domain.Poll
+@{
+    ViewData["Title"] = "Poll Results";
+}
 
 <h2>@Model.Title</h2>
-<p>Thanks for voting! Here's the current result:</p>
+<p class="mb-4">Thanks for voting! Here's the current result:</p>
 
-<canvas id="pollChart" width="400" height="200"></canvas>
+<canvas id="resultsChart" width="400" height="200"></canvas>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-    const ctx = document.getElementById('pollChart').getContext('2d');
-    const chart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: @Html.Raw(Json.Serialize(ViewBag.Labels)),
-            datasets: [{
-                label: 'Votes',
-                data: @Html.Raw(Json.Serialize(ViewBag.Votes)),
-                backgroundColor: '#E88873',
-                borderColor: '#E88873',
-                borderWidth: 1
-            }]
-        },
-        options: {
-            plugins: {
-                legend: {
-                    labels: { color: '#F5F5F5' }
-                },
-                tooltip: {
-                    bodyColor: '#F5F5F5',
-                    backgroundColor: '#484A47',
-                }
+<a class="btn btn-link mt-4" asp-action="Index">← Back to Polls</a>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        const ctx = document.getElementById('resultsChart').getContext('2d');
+        const resultsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    '@Model.Option1Text',
+                    '@Model.Option2Text',
+                    '@Model.Option3Text'
+                ],
+                datasets: [{
+                    label: 'Votes',
+                    data: [
+        @Model.Option1VotesCount,
+        @Model.Option2VotesCount,
+        @Model.Option3VotesCount
+                    ],
+                    backgroundColor: [
+                        'rgba(232, 136, 115, 0.7)', // salmon
+                        'rgba(160, 119, 116, 0.7)', // old rose
+                        'rgba(224, 172, 157, 0.7)'  // melon
+                    ],
+                    borderColor: [
+                        'rgba(232, 136, 115, 1)',
+                        'rgba(160, 119, 116, 1)',
+                        'rgba(224, 172, 157, 1)'
+                    ],
+                    borderWidth: 1
+                }]
             },
-            scales: {
-                x: {
-                    ticks: { color: '#F5F5F5' },
-                    grid: { color: 'rgba(255,255,255,0.1)' }
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#fff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: '#fff'
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        }
+                    }
                 },
-                y: {
-                    beginAtZero: true,
-                    ticks: { color: '#F5F5F5' },
-                    grid: { color: 'rgba(255,255,255,0.1)' }
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#fff'
+                        }
+                    }
                 }
             }
-        }
-    });
-</script>
-
-
-
-
-<a href="/Poll/Index">⬅ Back to Polls</a>
+        });
+    </script>
+}

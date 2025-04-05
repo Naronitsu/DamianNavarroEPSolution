@@ -2,6 +2,7 @@
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Models;
 
 namespace Presentation.Controllers
 {
@@ -75,6 +76,19 @@ namespace Presentation.Controllers
 
             return View("Results", poll);
         }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public IActionResult Results(int id)
+        {
+            var poll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
+            if (poll == null)
+            {
+                return NotFound();
+            }
+            return View(poll);
+        }
+
 
 
 
