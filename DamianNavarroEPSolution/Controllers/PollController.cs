@@ -70,7 +70,6 @@ namespace Presentation.Controllers
             poll.VoterIds.Add(userId);
             _pollRepository.UpdatePoll(poll);
 
-            // ✅ Pass chart labels and data to ViewBag
             ViewBag.Labels = new[] { poll.Option1Text, poll.Option2Text, poll.Option3Text };
             ViewBag.Votes = new[] { poll.Option1VotesCount, poll.Option2VotesCount, poll.Option3VotesCount };
 
