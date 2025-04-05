@@ -7,34 +7,45 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const ctx = document.getElementById('pollChart');
-
-        new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [
-                    '@Model.Option1Text',
-                    '@Model.Option2Text',
-                    '@Model.Option3Text'
-                ],
-                datasets: [{
-                    label: 'Votes',
-                    data: [
-    @Model.Option1VotesCount,
-    @Model.Option2VotesCount,
-    @Model.Option3VotesCount
-                    ],
-                    borderWidth: 1
-                }]
+    const ctx = document.getElementById('pollChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(Json.Serialize(ViewBag.Labels)),
+            datasets: [{
+                label: 'Votes',
+                data: @Html.Raw(Json.Serialize(ViewBag.Votes)),
+                backgroundColor: '#E88873',
+                borderColor: '#E88873',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    labels: { color: '#F5F5F5' }
+                },
+                tooltip: {
+                    bodyColor: '#F5F5F5',
+                    backgroundColor: '#484A47',
+                }
             },
-            options: {
-                scales: {
-                    y: { beginAtZero: true }
+            scales: {
+                x: {
+                    ticks: { color: '#F5F5F5' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#F5F5F5' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
                 }
             }
-        });
+        }
     });
 </script>
+
+
+
 
 <a href="/Poll/Index">⬅ Back to Polls</a>

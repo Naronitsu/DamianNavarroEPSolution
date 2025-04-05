@@ -44,5 +44,12 @@ namespace DataAccess
             _context.SaveChanges();
         }
 
+        public void UpdatePoll(Poll poll)
+        {
+            _context.Polls.Update(poll);
+            _context.SaveChanges();
+        }
+
+
     }
 }

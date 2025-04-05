@@ -42,5 +42,18 @@ namespace DataAccess
             File.WriteAllText(_filePath, JsonSerializer.Serialize(polls));
         }
 
+        public void UpdatePoll(Poll updatedPoll)
+        {
+            var polls = GetPolls().ToList();
+            var index = polls.FindIndex(p => p.Id == updatedPoll.Id);
+
+            if (index != -1)
+            {
+                polls[index] = updatedPoll;
+                File.WriteAllText(_filePath, JsonSerializer.Serialize(polls));
+            }
+        }
+
+
     }
 }

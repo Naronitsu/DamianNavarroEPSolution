@@ -5,15 +5,18 @@
 <form asp-action="Vote" method="post">
     <input type="hidden" name="id" value="@Model.Id" />
 
-    <div>
-        <input type="radio" name="optionSelected" value="1" /> @Model.Option1Text
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="optionSelected" value="1" id="opt1" />
+        <label class="form-check-label" for="opt1">@Model.Option1Text</label>
     </div>
-    <div>
-        <input type="radio" name="optionSelected" value="2" /> @Model.Option2Text
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="optionSelected" value="2" id="opt2" />
+        <label class="form-check-label" for="opt2">@Model.Option2Text</label>
     </div>
-    <div>
-        <input type="radio" name="optionSelected" value="3" /> @Model.Option3Text
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="optionSelected" value="3" id="opt3" />
+        <label class="form-check-label" for="opt3">@Model.Option3Text</label>
     </div>
 
-    <button type="submit">Vote</button>
+    <button type="submit" class="btn btn-success mt-3">Submit Vote</button>
 </form>

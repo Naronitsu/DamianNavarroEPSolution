@@ -1,5 +1,6 @@
 ﻿using DataAccess;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Presentation.Controllers
@@ -25,6 +26,14 @@ namespace Presentation.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult AlreadyVoted([FromServices] IPollRepository injectedRepo)
+        {
+            var allPolls = injectedRepo.GetPolls();
+            return View();
+        }
+
+
         [HttpPost]
         public IActionResult Create(Poll poll)
         {
@@ -36,7 +45,9 @@ namespace Presentation.Controllers
             return View(poll);
         }
 
+        [Authorize]
         [HttpGet]
+        [PreventDoubleVote]
         public IActionResult Vote(int id)
         {
             var poll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
@@ -44,12 +55,28 @@ namespace Presentation.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        [PreventDoubleVote]
         public IActionResult Vote(int id, int optionSelected)
         {
+            var userId = User.Identity?.Name;
+            var poll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
+
+            if (poll == null || poll.VoterIds.Contains(userId))
+                return RedirectToAction("AlreadyVoted");
+
             _pollRepository.Vote(id, optionSelected);
-            var updatedPoll = _pollRepository.GetPolls().FirstOrDefault(p => p.Id == id);
-            return View("Results", updatedPoll);
+            poll.VoterIds.Add(userId);
+            _pollRepository.UpdatePoll(poll);
+
+            // ✅ Pass chart labels and data to ViewBag
+            ViewBag.Labels = new[] { poll.Option1Text, poll.Option2Text, poll.Option3Text };
+            ViewBag.Votes = new[] { poll.Option1VotesCount, poll.Option2VotesCount, poll.Option3VotesCount };
+
+            return View("Results", poll);
         }
+
+
 
 
 

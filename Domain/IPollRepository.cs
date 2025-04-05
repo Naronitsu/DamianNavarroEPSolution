@@ -7,5 +7,7 @@ namespace Domain
         void CreatePoll(Poll poll);
         IEnumerable<Poll> GetPolls();
         void Vote(int pollId, int optionSelected);
+        void UpdatePoll(Poll poll);
+
     }
 }

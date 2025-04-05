@@ -17,5 +17,7 @@ namespace Domain
         public int Option2VotesCount { get; set; }
         public int Option3VotesCount { get; set; }
         public DateTime DateCreated { get; set; }
+        public List<string> VoterIds { get; set; } = new List<string>();
+
     }
 }
